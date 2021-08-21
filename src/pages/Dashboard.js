@@ -8,6 +8,7 @@ import Budget from 'src/components/dashboard//Budget';
 import LatestOrders from 'src/components/dashboard//LatestOrders';
 import LatestProducts from 'src/components/dashboard//LatestProducts';
 import Sales from 'src/components/dashboard//Sales';
+import Saless from 'src/components/dashboard//Saless';
 import TasksProgress from 'src/components/dashboard//TasksProgress';
 import TotalCustomers from 'src/components/dashboard//TotalCustomers';
 import TotalProfit from 'src/components/dashboard//TotalProfit';
@@ -101,6 +102,7 @@ const Dashboard = () => (
             xs={12}
           >
             <LatestOrders />
+            <Saless />
           </Grid>
         </Grid>
       </Container>

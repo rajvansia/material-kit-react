@@ -27,7 +27,7 @@ const Budget = (props) => (
             gutterBottom
             variant="h6"
           >
-            Budget
+            {props.name.given.join(' ') + ' ' + props.name.family}
           </Typography>
           <Typography
             color="textPrimary"

@@ -14,6 +14,7 @@ const App = () => {
       <GlobalStyles />
       {routing}
     </ThemeProvider>
+
   );
 };
 

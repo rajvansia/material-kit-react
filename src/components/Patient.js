@@ -1,36 +1,16 @@
-import { Helmet } from 'react-helmet';
 import React from 'react';
-import { Box, Container } from '@material-ui/core';
-import CustomerListResults from 'src/components/customer/CustomerListResults';
-import CustomerListToolbar from 'src/components/customer/CustomerListToolbar';
 import Budgets from 'src/components/dashboard//Budgets';
-import customers from 'src/__mocks__/customers';
 import { FhirClientContext } from '../FhirClientContext';
 
-const CustomerList = (patient) => (
-  <>
-    <Helmet>
-      <title>Customers | Material Kit</title>
-    </Helmet>
-    <Box
-      sx={{
-        backgroundColor: 'background.default',
-        minHeight: '100%',
-        py: 3
-      }}
-    >
-      <Container maxWidth={false}>
-        <CustomerListToolbar />
-        <Box sx={{ pt: 3 }}>
-          <CustomerListResults customers={customers} />
-          <Budgets name={patient} />
-        </Box>
-      </Container>
-    </Box>
-  </>
-);
+function PatientBanner(entry) {
+  return (
+    <div>
+      <Budgets name={entry} />
+    </div>
+  );
+}
 
-export default class CustomerLists extends React.Component {
+export default class Patient extends React.Component {
     static contextType = FhirClientContext;
 
     constructor(props) {
@@ -67,7 +47,6 @@ export default class CustomerLists extends React.Component {
         return error.message;
       }
       const entry = patient.name.find(nameRecord => nameRecord.use === 'official') || [0];
-
-      return <CustomerList {...entry} />;
+      return <PatientBanner {...entry} />;
     }
 }
