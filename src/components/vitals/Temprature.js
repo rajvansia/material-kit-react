@@ -1,16 +1,16 @@
 import React from 'react';
-import Budgets from 'src/components/dashboard//Budgets';
-import { FhirClientContext } from '../FhirClientContext';
+import Vitalinfo from 'src/components/dashboard/Vitalinfo';
+import { FhirClientContext } from 'src/FhirClientContext';
 
-function PatientBanner(entry) {
+function PatientBanner() {
   return (
     <div>
-      <Budgets name={entry} />
+      <Vitalinfo name="Temprature" value="94" date="10-3-2021" units="F" />
     </div>
   );
 }
 
-export default class Patient extends React.Component {
+export default class Temprature extends React.Component {
     static contextType = FhirClientContext;
 
     constructor(props) {

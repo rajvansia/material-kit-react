@@ -8,7 +8,6 @@ function Headerbanner() {
     <FhirClientProvider>
       <div>
         <Patient />
-        hi
       </div>
     </FhirClientProvider>
   );
