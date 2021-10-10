@@ -3,11 +3,9 @@ import React from 'react';
 import { Box, Container } from '@material-ui/core';
 import CustomerListResults from 'src/components/customer/CustomerListResults';
 import CustomerListToolbar from 'src/components/customer/CustomerListToolbar';
-import Budgets from 'src/components/dashboard//Budgets';
-import customers from 'src/__mocks__/customers';
 import { FhirClientContext } from '../FhirClientContext';
 
-const CustomerList = (patient) => (
+const Medications = (customers) => (
   <>
     <Helmet>
       <title>Customers | Material Kit</title>
@@ -23,14 +21,13 @@ const CustomerList = (patient) => (
         <CustomerListToolbar />
         <Box sx={{ pt: 3 }}>
           <CustomerListResults customers={customers} />
-          <Budgets name={patient} />
         </Box>
       </Container>
     </Box>
   </>
 );
 
-export default class CustomerLists extends React.Component {
+export default class MedicationList extends React.Component {
     static contextType = FhirClientContext;
 
     constructor(props) {
@@ -45,19 +42,23 @@ export default class CustomerLists extends React.Component {
 
     componentDidMount() {
       const client = this.context.client;
+      const queryMed = new URLSearchParams();
+      queryMed.set('patient', client.patient.id);
       console.log(client);
-      this._loader = client.patient
-        .read()
-        .then(patient => {
-          this.setState({ patient, loading: false, error: null });
-        })
+      this._loader = client.request('MedicationRequest?' + queryMed, {
+        pageLimit: 0, // get all pages
+        flat: true // return flat array of Observation resources
+      }).then(customers => {
+        this.setState({ customers, loading: false, error: null });
+      })
         .catch(error => {
           this.setState({ error, loading: false });
         });
     }
 
     render() {
-      const { error, loading, patient } = this.state;
+      const { error, loading, customers } = this.state;
+      // console.log(customers);
 
       if (loading) {
         return null;
@@ -66,8 +67,6 @@ export default class CustomerLists extends React.Component {
         console.log(error.message);
         return error.message;
       }
-      const entry = patient.name.find(nameRecord => nameRecord.use === 'official') || [0];
-
-      return <CustomerList {...entry} />;
+      return <Medications {...customers} />;
     }
 }

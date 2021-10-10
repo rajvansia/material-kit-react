@@ -2,15 +2,11 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
-  Badge,
-  Box,
   Hidden,
   IconButton,
   Toolbar
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import InputIcon from '@material-ui/icons/Input';
 import Logo from './Logo';
 import { FhirClientContext } from '../FhirClientContext';
 
@@ -25,22 +21,7 @@ const DashboardNavbars = (props) => {
         <RouterLink to="/">
           <Logo />
         </RouterLink>
-        {props.given.join(' ') + ' ' + props.family}
-        <Box sx={{ flexGrow: 1 }} />
-        <Hidden lgDown>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit">
-            <InputIcon />
-          </IconButton>
-        </Hidden>
+        {props.given.join(' ') + ' ' + props.family + notifications}
         <Hidden lgUp>
           <IconButton
             color="inherit"

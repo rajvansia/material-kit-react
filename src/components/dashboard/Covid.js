@@ -1,20 +1,21 @@
 import React from 'react';
-import Vitalinfo from 'src/components/dashboard/Vitalinfo';
+import CovidInfo from 'src/components/dashboard/CovidInfo';
 import { FhirClientContext } from 'src/FhirClientContext';
 
 function PatientBanner() {
   return (
     <div>
-      <Vitalinfo name="Temprature" value="94" date="10-3-2021" units="F" />
+      <CovidInfo name="Blood Pressure" value="150/94" date="10-3-2021" units="mmhg" />
     </div>
   );
 }
 
-export default class Temprature extends React.Component {
+export default class Covid extends React.Component {
     static contextType = FhirClientContext;
 
     constructor(props) {
       super(props);
+      console.log(props.name);
       this.state = {
         loading: true,
         patient: null,
@@ -25,6 +26,7 @@ export default class Temprature extends React.Component {
 
     componentDidMount() {
       const client = this.context.client;
+      console.log(client);
       this._loader = client.patient
         .read()
         .then(patient => {
