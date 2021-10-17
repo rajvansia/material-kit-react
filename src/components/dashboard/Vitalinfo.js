@@ -34,9 +34,9 @@ const Vitalinfo = (props) => (
             }}
             variant="h2"
           >
-            <span>{props.value}</span>
+            <span>{props.vital.valueQuantity.value}</span>
             <span> </span>
-            <span>{props.units}</span>
+            <span>{props.vital.valueQuantity.unit}</span>
           </Typography>
         </Grid>
         <Grid item>

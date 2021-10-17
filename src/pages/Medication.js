@@ -1,14 +1,14 @@
 import { Helmet } from 'react-helmet';
 import React from 'react';
 import { Box, Container } from '@material-ui/core';
-import CustomerListResults from 'src/components/customer/CustomerListResults';
-import CustomerListToolbar from 'src/components/customer/CustomerListToolbar';
+import MedicationList from 'src/components/medication/MedicationList';
+import MedicationToolbar from 'src/components/medication/MedicationToolbar';
 import { FhirClientContext } from '../FhirClientContext';
 
-const Medications = (customers) => (
+const Medications = (meds) => (
   <>
     <Helmet>
-      <title>Customers | Material Kit</title>
+      <title>Medications | Material Kit</title>
     </Helmet>
     <Box
       sx={{
@@ -18,16 +18,16 @@ const Medications = (customers) => (
       }}
     >
       <Container maxWidth={false}>
-        <CustomerListToolbar />
+        <MedicationToolbar />
         <Box sx={{ pt: 3 }}>
-          <CustomerListResults customers={customers} />
+          <MedicationList meds={meds} />
         </Box>
       </Container>
     </Box>
   </>
 );
 
-export default class MedicationList extends React.Component {
+export default class Medication extends React.Component {
     static contextType = FhirClientContext;
 
     constructor(props) {
@@ -48,8 +48,8 @@ export default class MedicationList extends React.Component {
       this._loader = client.request('MedicationRequest?' + queryMed, {
         pageLimit: 0, // get all pages
         flat: true // return flat array of Observation resources
-      }).then(customers => {
-        this.setState({ customers, loading: false, error: null });
+      }).then(meds => {
+        this.setState({ meds, loading: false, error: null });
       })
         .catch(error => {
           this.setState({ error, loading: false });
@@ -57,7 +57,7 @@ export default class MedicationList extends React.Component {
     }
 
     render() {
-      const { error, loading, customers } = this.state;
+      const { error, loading, meds } = this.state;
       // console.log(customers);
 
       if (loading) {
@@ -67,6 +67,6 @@ export default class MedicationList extends React.Component {
         console.log(error.message);
         return error.message;
       }
-      return <Medications {...customers} />;
+      return <Medications {...meds} />;
     }
 }

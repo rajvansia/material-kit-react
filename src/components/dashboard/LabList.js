@@ -13,12 +13,11 @@ import {
   Typography
 } from '@material-ui/core';
 
-const CustomerListResults = (customers) => {
+const LabList = (labs) => {
   const [selectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const custs = Object.values(customers.customers);
-  console.log(custs);
+  const labsvalues = Object.values(labs.labs);
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
   };
@@ -46,11 +45,11 @@ const CustomerListResults = (customers) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {custs.map((customer) => (
+              {labsvalues.map((lab) => (
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  key={lab.id}
+                  selected={selectedCustomerIds.indexOf(lab.id) !== -1}
                 >
                   <TableCell>
                     <Box
@@ -63,15 +62,15 @@ const CustomerListResults = (customers) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.medicationCodeableConcept.text}
+                        {lab.code.text}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
-                    {customer.status}
+                    {`${lab.valueQuantity.value} ${lab.valueQuantity.unit}`}
                   </TableCell>
                   <TableCell>
-                    {moment(customer.authoredOn).format('DD/MM/YYYY')}
+                    {moment(lab.effectiveDateTime).format('DD/MM/YYYY')}
                   </TableCell>
                 </TableRow>
               ))}
@@ -81,7 +80,7 @@ const CustomerListResults = (customers) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={customers.length}
+        count={labsvalues.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}
@@ -96,4 +95,4 @@ const CustomerListResults = (customers) => {
 //   customers: PropTypes.array.isRequired
 // };
 
-export default CustomerListResults;
+export default LabList;

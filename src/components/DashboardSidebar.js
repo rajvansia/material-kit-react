@@ -28,12 +28,12 @@ const items = [
     title: 'Medications'
   },
   {
-    href: '/app/products',
+    href: '/app/careteam',
     icon: ShoppingBagIcon,
     title: 'Care Team'
   },
   {
-    href: '/app/settings',
+    href: '/app/labs',
     icon: SettingsIcon,
     title: 'Labs'
   }

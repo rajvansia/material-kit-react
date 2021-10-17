@@ -8,13 +8,10 @@ import {
 import VitalsTable from 'src/components/dashboard/VitalsTable';
 import Sales from 'src/components/dashboard//Sales';
 import Covid from 'src/components/dashboard/Covid';
-import Spo from 'src/components/vitals/Spo';
-import BP from 'src/components/vitals/BP';
-import Rr from 'src/components/vitals/Rr';
-import Temprature from 'src/components/vitals/Temprature';
+import Vitalinfo from 'src/components/dashboard/Vitalinfo';
 import { FhirClientContext } from 'src/FhirClientContext';
 
-const DashboardView = () => (
+const DashboardView = (props) => (
   <>
     <Helmet>
       <title>Dashboard | Material Kit</title>
@@ -47,7 +44,7 @@ const DashboardView = () => (
             xl={3}
             xs={12}
           >
-            <BP />
+            <Vitalinfo name="BP" value="94" date="10-3-2021" units="%" vital={props.currentSpo[0]} />
           </Grid>
           <Grid
             item
@@ -56,7 +53,7 @@ const DashboardView = () => (
             xl={3}
             xs={12}
           >
-            <Rr />
+            <Vitalinfo name="HR" value="94" date="10-3-2021" units="%" vital={props.currentHeartrate[0]} />
           </Grid>
           <Grid
             item
@@ -65,7 +62,7 @@ const DashboardView = () => (
             xl={3}
             xs={12}
           >
-            <Spo />
+            <Vitalinfo name="SPO2" value="94" date="10-3-2021" units="%" vital={props.currentSpo[0]} />
           </Grid>
           <Grid
             item
@@ -74,7 +71,7 @@ const DashboardView = () => (
             xl={3}
             xs={12}
           >
-            <Temprature />
+            <Vitalinfo name="Temprature" value="94" date="10-3-2021" units="%" vital={props.currentSpo[0]} />
           </Grid>
           <Grid
             item
@@ -109,7 +106,7 @@ export default class Dashboard extends React.Component {
       console.log('test');
       this.state = {
         loading: true,
-        patient: null,
+        vitals: null,
         error: null
       };
     }
@@ -122,21 +119,27 @@ export default class Dashboard extends React.Component {
       query.set('_count', 100);
       query.set('_sort', '-date'); // Try this to fetch fewer pages
       query.set('code', [
-        'http://loinc.org|29463-7', // weight
-        'http://loinc.org|8302-2', // Body height
-        'http://loinc.org|8462-4',
-        'http://loinc.org|8480-6',
-        'http://loinc.org|2085-9',
-        'http://loinc.org|2089-1',
-        'http://loinc.org|55284-4',
-        'http://loinc.org|3141-9',
+        'http://loinc.org|8462-4', // diastolic blood pressure
+        'http://loinc.org|8480-6', // systolic blood pressure
+        'http://loinc.org|55284-4', // blood pressure systolic and diasoltic
+        'http://loinc.org|8331-1', // oraltemprature
+        'http://loinc.org|59408-5', // SPo2
+        'http://loinc.org|8867-4', // heart rate
       ].join(','));
       this._loader = client.request('Observation?' + query, {
         pageLimit: 0, // get all pages
         flat: true // return flat array of Observation resources
       })
-        .then(patient => {
-          this.setState({ patient, loading: false, error: null });
+        .then(vitals => {
+          const byCodes = client.byCodes(vitals, 'code');
+          const currentSpo = byCodes('59408-5');
+          const currentHeartrate = byCodes('8867-4');
+          const currentTemprature = byCodes('8331-1');
+          const currentBloodpressure = byCodes('55284-4');
+
+          this.setState({
+            vitals, currentSpo, currentHeartrate, currentTemprature, currentBloodpressure, loading: false, error: null
+          });
         })
         .catch(error => {
           this.setState({ error, loading: false });
@@ -144,8 +147,9 @@ export default class Dashboard extends React.Component {
     }
 
     render() {
-      const { error, loading, patient } = this.state;
-
+      const {
+        error, loading, vitals
+      } = this.state;
       if (loading) {
         return null;
       }
@@ -153,8 +157,7 @@ export default class Dashboard extends React.Component {
         console.log(error.message);
         return error.message;
       }
-      console.log(patient);
-      const entry = 'test';
-      return <DashboardView {...entry} />;
+      console.log(vitals);
+      return <DashboardView {...this.state} />;
     }
 }

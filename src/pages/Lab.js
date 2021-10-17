@@ -1,13 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Box, Container } from '@material-ui/core';
-import LatestOrders from 'src/components/dashboard//LatestOrders';
+import LabList from 'src/components/dashboard//LabList';
 import { FhirClientContext } from '../FhirClientContext';
 
-const Settings = (labs) => (
+const LabView = (labs) => (
   <>
     <Helmet>
-      <title>Settings | Material Kit</title>
+      <title>Labs | Material Kit</title>
     </Helmet>
     <Box
       sx={{
@@ -17,20 +17,20 @@ const Settings = (labs) => (
       }}
     >
       <Container maxWidth="lg">
-        <LatestOrders labs={labs} />
+        <LabList labs={labs} />
       </Container>
     </Box>
   </>
 );
 
-export default class SettingsView extends React.Component {
+export default class Lab extends React.Component {
     static contextType = FhirClientContext;
 
     constructor(props) {
       super(props);
       this.state = {
         loading: true,
-        patient: null,
+        labs: null,
         error: null
       };
     }
@@ -65,6 +65,6 @@ export default class SettingsView extends React.Component {
         return error.message;
       }
 
-      return <Settings {...labs} />;
+      return <LabView {...labs} />;
     }
 }

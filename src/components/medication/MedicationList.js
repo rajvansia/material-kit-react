@@ -13,12 +13,11 @@ import {
   Typography
 } from '@material-ui/core';
 
-const LatestOrders = (labs) => {
+const MedicationList = (meds) => {
   const [selectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const custs = Object.values(labs.labs);
-  console.log(custs);
+  const medications = Object.values(meds.meds);
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
   };
@@ -46,11 +45,11 @@ const LatestOrders = (labs) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {custs.map((customer) => (
+              {medications.map((med) => (
                 <TableRow
                   hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  key={med.id}
+                  selected={selectedCustomerIds.indexOf(med.id) !== -1}
                 >
                   <TableCell>
                     <Box
@@ -63,15 +62,15 @@ const LatestOrders = (labs) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.code.text}
+                        {med.medicationCodeableConcept.text}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
-                    {`${customer.valueQuantity.value} ${customer.valueQuantity.unit}`}
+                    {med.status}
                   </TableCell>
                   <TableCell>
-                    {moment(customer.effectiveDateTime).format('DD/MM/YYYY')}
+                    {moment(med.authoredOn).format('DD/MM/YYYY')}
                   </TableCell>
                 </TableRow>
               ))}
@@ -81,7 +80,7 @@ const LatestOrders = (labs) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={labs.length}
+        count={medications.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}
@@ -96,4 +95,4 @@ const LatestOrders = (labs) => {
 //   customers: PropTypes.array.isRequired
 // };
 
-export default LatestOrders;
+export default MedicationList;
