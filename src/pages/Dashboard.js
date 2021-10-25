@@ -5,10 +5,10 @@ import {
   Container,
   Grid
 } from '@material-ui/core';
-import VitalsTable from 'src/components/dashboard/VitalsTable';
 import Sales from 'src/components/dashboard//Sales';
 import Covid from 'src/components/dashboard/Covid';
 import Vitalinfo from 'src/components/dashboard/Vitalinfo';
+import VitalForm from 'src/components/vitals/VitalForm';
 import { FhirClientContext } from 'src/FhirClientContext';
 
 const DashboardView = (props) => (
@@ -44,7 +44,7 @@ const DashboardView = (props) => (
             xl={3}
             xs={12}
           >
-            <Vitalinfo name="BP" value="94" date="10-3-2021" units="%" vital={props.currentSpo[0]} />
+            <Vitalinfo name="BP" vital={props.currentSpo[0]} />
           </Grid>
           <Grid
             item
@@ -53,7 +53,7 @@ const DashboardView = (props) => (
             xl={3}
             xs={12}
           >
-            <Vitalinfo name="HR" value="94" date="10-3-2021" units="%" vital={props.currentHeartrate[0]} />
+            <Vitalinfo name="HR" vital={props.currentHeartrate[0]} />
           </Grid>
           <Grid
             item
@@ -62,7 +62,7 @@ const DashboardView = (props) => (
             xl={3}
             xs={12}
           >
-            <Vitalinfo name="SPO2" value="94" date="10-3-2021" units="%" vital={props.currentSpo[0]} />
+            <Vitalinfo name="SPO2" vital={props.currentSpo[0]} />
           </Grid>
           <Grid
             item
@@ -71,7 +71,7 @@ const DashboardView = (props) => (
             xl={3}
             xs={12}
           >
-            <Vitalinfo name="Temprature" value="94" date="10-3-2021" units="%" vital={props.currentSpo[0]} />
+            <Vitalinfo name="Temprature" vital={props.currentSpo[0]} />
           </Grid>
           <Grid
             item
@@ -89,7 +89,7 @@ const DashboardView = (props) => (
             xl={12}
             xs={16}
           >
-            <VitalsTable />
+            <VitalForm />
           </Grid>
         </Grid>
       </Container>

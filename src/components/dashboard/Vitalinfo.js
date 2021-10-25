@@ -70,7 +70,7 @@ const Vitalinfo = (props) => (
           color="textSecondary"
           variant="caption"
         >
-          {props.date}
+          {props.vital.effectiveDateTime}
         </Typography>
       </Box>
     </CardContent>
