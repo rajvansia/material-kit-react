@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import fhirdata from 'src/__mocks__/fhirdata';
 
 export default function VitalForm() {
   const [open, setOpen] = React.useState(false);
@@ -22,6 +23,7 @@ export default function VitalForm() {
   const handleClose = () => {
     setOpen(false);
     console.log({ vitals });
+    console.log(fhirdata[0]);
   };
 
   const inputChangeHandler = (event) => {

@@ -10,6 +10,7 @@ import Covid from 'src/components/dashboard/Covid';
 import Vitalinfo from 'src/components/dashboard/Vitalinfo';
 import VitalForm from 'src/components/vitals/VitalForm';
 import { FhirClientContext } from 'src/FhirClientContext';
+import fhirdata from 'src/__mocks__/fhirdata';
 
 const DashboardView = (props) => (
   <>
@@ -144,6 +145,8 @@ export default class Dashboard extends React.Component {
         .catch(error => {
           this.setState({ error, loading: false });
         });
+
+      client.create(fhirdata[0]);
     }
 
     render() {
