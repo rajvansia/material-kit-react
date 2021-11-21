@@ -9,94 +9,106 @@ import Sales from 'src/components/dashboard//Sales';
 import Covid from 'src/components/dashboard/Covid';
 import Vitalinfo from 'src/components/dashboard/Vitalinfo';
 import VitalForm from 'src/components/vitals/VitalForm';
+import VitalsTable from 'src/components/dashboard/VitalsTable';
 import { FhirClientContext } from 'src/FhirClientContext';
 import fhirdata from 'src/__mocks__/fhirdata';
 
-const DashboardView = (props) => (
-  <>
-    <Helmet>
-      <title>Dashboard | Material Kit</title>
-    </Helmet>
-    <Box
-      sx={{
-        backgroundColor: 'background.default',
-        minHeight: '100%',
-        py: 3
-      }}
-    >
-      <Container maxWidth={false}>
-        <Grid
-          container
-          spacing={3}
-        >
-          <Grid
-            item
-            lg={12}
-            sm={24}
-            xl={12}
-            xs={48}
-          >
-            <Covid />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Vitalinfo name="BP" vital={props.currentSpo[0]} />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Vitalinfo name="HR" vital={props.currentHeartrate[0]} />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Vitalinfo name="SPO2" vital={props.currentSpo[0]} />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Vitalinfo name="Temprature" vital={props.currentSpo[0]} />
-          </Grid>
-          <Grid
-            item
-            lg={12}
-            md={16}
-            xl={12}
-            xs={16}
-          >
-            <Sales />
-          </Grid>
-          <Grid
-            item
-            lg={12}
-            md={16}
-            xl={12}
-            xs={16}
-          >
-            <VitalForm />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  </>
-);
+// const DashboardView = (props) => (
+//   <>
+//     <Helmet>
+//       <title>Dashboard | Material Kit</title>
+//     </Helmet>
+//     <Box
+//       sx={{
+//         backgroundColor: 'background.default',
+//         minHeight: '100%',
+//         py: 3
+//       }}
+//     >
+//       <Container maxWidth={false}>
+//         <Grid
+//           container
+//           spacing={3}
+//         >
+//           <Grid
+//             item
+//             lg={12}
+//             sm={24}
+//             xl={12}
+//             xs={48}
+//           >
+//             <Covid />
+//           </Grid>
+//           <Grid
+//             item
+//             lg={3}
+//             sm={6}
+//             xl={3}
+//             xs={12}
+//           >
+//              <button type="button" value="hello!" onClick={() => deleteUserWithName()}>
+//             <Vitalinfo name="BP" vital={props.currentSpo[0]} />
+//              </button>
+//           </Grid>
+//           <Grid
+//             item
+//             lg={3}
+//             sm={6}
+//             xl={3}
+//             xs={12}
+//           >
+//             <Vitalinfo name="HR" vital={props.currentHeartrate[0]} />
+//           </Grid>
+//           <Grid
+//             item
+//             lg={3}
+//             sm={6}
+//             xl={3}
+//             xs={12}
+//           >
+//             <Vitalinfo name="SPO2" vital={props.currentSpo[0]} />
+//           </Grid>
+//           <Grid
+//             item
+//             lg={3}
+//             sm={6}
+//             xl={3}
+//             xs={12}
+//           >
+//             <Vitalinfo name="Temprature" vital={props.currentSpo[0]} />
+//           </Grid>
+//           <Grid
+//             item
+//             lg={12}
+//             md={16}
+//             xl={12}
+//             xs={16}
+//           >
+//             <VitalForm />
+//           </Grid>
+//           <Grid
+//             item
+//             lg={12}
+//             md={16}
+//             xl={12}
+//             xs={16}
+//           >
+//             <Sales />
+//           </Grid>
+//           <Grid
+//             item
+//             lg={12}
+//             md={16}
+//             xl={12}
+//             xs={16}
+//           >
+//             <VitalsTable name="test" />
+//           </Grid>
+//         </Grid>
+//       </Container>
+//     </Box>
+//   </>
+// );
 
 export default class Dashboard extends React.Component {
     static contextType = FhirClientContext;
@@ -108,8 +120,10 @@ export default class Dashboard extends React.Component {
       this.state = {
         loading: true,
         vitals: null,
-        error: null
+        error: null,
+        name: null
       };
+      this.changeVital = this.changeVital.bind(this);
     }
     // this loader is used for
 
@@ -137,9 +151,10 @@ export default class Dashboard extends React.Component {
           const currentHeartrate = byCodes('8867-4');
           const currentTemprature = byCodes('8331-1');
           const currentBloodpressure = byCodes('55284-4');
+          const name = 'SPO2';
 
           this.setState({
-            vitals, currentSpo, currentHeartrate, currentTemprature, currentBloodpressure, loading: false, error: null
+            vitals, currentSpo, currentHeartrate, currentTemprature, currentBloodpressure, name, loading: false, error: null
           });
         })
         .catch(error => {
@@ -147,6 +162,11 @@ export default class Dashboard extends React.Component {
         });
 
       client.create(fhirdata[0]);
+    }
+
+    changeVital(vitaltype) {
+      alert(vitaltype);
+      this.setState({ name: vitaltype });
     }
 
     render() {
@@ -161,6 +181,107 @@ export default class Dashboard extends React.Component {
         return error.message;
       }
       console.log(vitals);
-      return <DashboardView {...this.state} />;
+      return (
+        <>
+          <Helmet>
+            <title>Dashboard | Material Kit</title>
+          </Helmet>
+          <Box
+            sx={{
+              backgroundColor: 'background.default',
+              minHeight: '100%',
+              py: 3
+            }}
+          >
+            <Container maxWidth={false}>
+              <Grid
+                container
+                spacing={3}
+              >
+                <Grid
+                  item
+                  lg={12}
+                  sm={24}
+                  xl={12}
+                  xs={48}
+                >
+                  <Covid />
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  sm={6}
+                  xl={3}
+                  xs={12}
+                >
+                   <button type="button" value="hello!" onClick={() => this.changeVital('SPO2')}>
+                  <Vitalinfo name="BP" vital={this.state.currentSpo[0]} />
+                   </button>
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  sm={6}
+                  xl={3}
+                  xs={12}
+                >
+                  <button type="button" value="hello!" onClick={() => this.changeVital('Heart Rate')}>
+                  <Vitalinfo name="HR" vital={this.state.currentHeartrate[0]} />
+                  </button>
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  sm={6}
+                  xl={3}
+                  xs={12}
+                >
+                  <button type="button" value="hello!" onClick={() => this.changeVital('RR')}>
+                  <Vitalinfo name="SPO2" vital={this.state.currentSpo[0]} />
+                  </button>
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  sm={6}
+                  xl={3}
+                  xs={12}
+                >
+                  <button type="button" value="hello!" onClick={() => this.changeVital('Temp')}>
+                  <Vitalinfo name="Temprature" vital={this.state.currentSpo[0]} />
+                  </button>
+                </Grid>
+                <Grid
+                  item
+                  lg={12}
+                  md={16}
+                  xl={12}
+                  xs={16}
+                >
+                  <VitalForm />
+                </Grid>
+                <Grid
+                  item
+                  lg={12}
+                  md={16}
+                  xl={12}
+                  xs={16}
+                >
+                  <Sales />
+                </Grid>
+                <Grid
+                  item
+                  lg={12}
+                  md={16}
+                  xl={12}
+                  xs={16}
+                >
+                  <VitalsTable name={this.state.name} />
+                </Grid>
+              </Grid>
+            </Container>
+          </Box>
+        </>
+      );
     }
 }

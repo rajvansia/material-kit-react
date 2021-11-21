@@ -92,6 +92,7 @@ const LatestOrders = (props) => (
             <TableRow>
               <TableCell>
                 Vital Sign
+                {props.name}
               </TableCell>
               <TableCell>
                 Result

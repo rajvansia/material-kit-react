@@ -8,22 +8,40 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import fhirdata from 'src/__mocks__/fhirdata';
+import { FhirClientContext } from 'src/FhirClientContext';
 
-export default function VitalForm() {
+function Form(client) {
   const [open, setOpen] = React.useState(false);
   const [vitals, setVitals] = React.useState({
     systolic: '',
-    mood: ''
+    mood: '',
+    spo: ''
   });
-
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  function addVitals(vivalue, id) {
+    console.log(vivalue);
+    console.log(id);
+    Object.keys(vivalue).forEach(key => {
+      if (vivalue[key] !== '') {
+        console.log(key);
+        console.log(vivalue[key]);
+      }
+    });
+  }
+
   const handleClose = () => {
     setOpen(false);
-    console.log({ vitals });
     console.log(fhirdata[0]);
+    console.log(vitals.spo);
+    addVitals(vitals, client.patient.id);
+    setVitals({
+      systolic: '',
+      mood: '',
+      spo: ''
+    });
   };
 
   const inputChangeHandler = (event) => {
@@ -147,4 +165,22 @@ export default function VitalForm() {
       </Dialog>
     </div>
   );
+}
+
+export default class VitalForm extends React.Component {
+    static contextType = FhirClientContext;
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        loading: true,
+        patient: null,
+        error: null
+      };
+    }
+    // this loader is used for
+
+    render() {
+      return <Form {...this.context.client} />;
+    }
 }

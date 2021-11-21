@@ -1,34 +1,27 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
-  Hidden,
-  IconButton,
   Toolbar
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import Logo from './Logo';
 import { FhirClientContext } from '../FhirClientContext';
 
 const DashboardNavbars = (props) => {
   const [notifications] = [1, 1];
-
+  const name = props.name.find(nameRecord => nameRecord.use === 'official') || [0];
   return (
     <AppBar
       elevation={0}
     >
       <Toolbar>
-        <RouterLink to="/">
-          <Logo />
-        </RouterLink>
-        {props.given.join(' ') + ' ' + props.family + notifications}
-        <Hidden lgUp>
-          <IconButton
-            color="inherit"
-          >
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
+        {name.given.join(' ') + ' ' + name.family + notifications}
+        <span>
+           Gender:
+           {props.gender}
+        </span>
+        <span>
+           DOB:
+           {props.birthDate}
+        </span>
       </Toolbar>
     </AppBar>
   );
@@ -70,7 +63,6 @@ export default class DashboardNavbar extends React.Component {
         console.log(error.message);
         return error.message;
       }
-      const entry = patient.name.find(nameRecord => nameRecord.use === 'official') || [0];
-      return <DashboardNavbars {...entry} />;
+      return <DashboardNavbars {...patient} />;
     }
 }
