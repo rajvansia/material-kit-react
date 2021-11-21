@@ -12,7 +12,7 @@ import {
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-const Sales = (props) => {
+const VitalsGraph = (props) => {
   const theme = useTheme();
 
   const data = {
@@ -96,6 +96,7 @@ const Sales = (props) => {
             variant="text"
           >
             Last 7 days
+            {props.name}
           </Button>
         )}
         title="Vitals"
@@ -135,4 +136,4 @@ const Sales = (props) => {
   );
 };
 
-export default Sales;
+export default VitalsGraph;
