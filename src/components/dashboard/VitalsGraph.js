@@ -1,4 +1,4 @@
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import {
   Box,
   Button,
@@ -14,21 +14,19 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 const VitalsGraph = (props) => {
   const theme = useTheme();
-
+  const vitals = Object.values(props.data);
+  const yData = vitals.map(vital => vital.valueQuantity.value);
+  const xData = vitals.map(vital => vital.effectiveDateTime);
+  // vital = vitals.valueQuantity.value
   const data = {
     datasets: [
       {
         backgroundColor: colors.indigo[500],
-        data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year'
-      },
-      {
-        backgroundColor: colors.grey[200],
-        data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year'
+        data: yData,
+        label: vitals[0].valueQuantity.unit
       }
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+    labels: xData
   };
 
   const options = {
@@ -109,7 +107,7 @@ const VitalsGraph = (props) => {
             position: 'relative'
           }}
         >
-          <Bar
+          <Line
             data={data}
             options={options}
           />

@@ -269,7 +269,7 @@ export default class Dashboard extends React.Component {
                   xl={12}
                   xs={16}
                 >
-                  <VitalsGraph name={this.state.name} />
+                  <VitalsGraph name={this.state.name} data={this.state.data} />
                 </Grid>
                 <Grid
                   item
