@@ -53,12 +53,17 @@ export default class VitalForm extends React.Component {
 
       const handleClose = () => {
         this.setState({ open: false });
-        console.log(fhirdata[0]);
+        fhirdata[0].valueQuantity.value = this.state.spo;
+
         this.context.client.create(fhirdata[0]);
+        console.log(this.state.spo);
       };
 
       const inputChangeHandler = (event) => {
         console.log(event);
+        this.setState({
+          [event.target.name]: event.target.value
+        });
       };
 
       return (
