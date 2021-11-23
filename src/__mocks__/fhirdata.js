@@ -1,81 +1,51 @@
 export default [
   {
     resourceType: 'Observation',
+    id: '136476',
+    meta: {
+      versionId: '1',
+      lastUpdated: '2021-11-22T20:50:13.841-05:00'
+    },
     status: 'final',
     category: [
       {
         coding: [
           {
             system: 'http://terminology.hl7.org/CodeSystem/observation-category',
-            code: 'laboratory',
-            display: 'Laboratory'
+            code: 'vital-signs',
+            display: 'vital-signs'
           }
-        ],
-        text: 'Laboratory'
+        ]
       }
     ],
     code: {
       coding: [
         {
           system: 'http://loinc.org',
-          code: '718-7',
-          display: 'Hemoglobin [Mass/volume] in Blood'
+          code: '2708-6',
+          display: 'Oxygen saturation in Arterial blood'
+        },
+        {
+          system: 'http://loinc.org',
+          code: '59408-5',
+          display: 'Oxygen saturation in Arterial blood by Pulse oximetry'
         }
       ],
-      text: 'Hemoglobin'
+      text: 'Oxygen saturation in Arterial blood'
     },
     subject: {
-      reference: 'Patient/1357374'
+      reference: 'Patient/1364292'
     },
-    issued: '2020-07-30T20:42:00.000Z',
-    effectiveDateTime: '2020-07-30T20:42:00.000Z',
-    performer: [
-      {
-        reference: 'Patient/1357374'
-      }
-    ],
+    encounter: {
+      reference: 'Encounter/1364767'
+    },
+    effectiveDateTime: '1975-11-07T23:47:51-05:00',
+    issued: '1975-11-06T23:47:51.831-05:00',
     valueQuantity: {
-      value: 13.2,
-      unit: 'mg/dL',
+      value: 100,
+      unit: '%',
       system: 'http://unitsofmeasure.org',
-      code: 'mg/dL'
-    },
-    interpretation: [
-      {
-        coding: [
-          {
-            system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
-            code: 'N',
-            display: 'Normal'
-          }
-        ],
-        text: 'Normal'
-      }
-    ],
-    referenceRange: [
-      {
-        low: {
-          value: 12.0,
-          unit: 'g/dL',
-          system: 'http://unitsofmeasure.org',
-          code: 'g/dL'
-        },
-        high: {
-          value: 15.5,
-          unit: 'g/dL',
-          system: 'http://unitsofmeasure.org',
-          code: 'g/dL'
-        }
-      }
-    ],
-    note: [
-      {
-        authorReference: {
-          reference: 'Practitioner/1477926'
-        },
-        time: '2020-07-30T20:42:15.000Z',
-        text: 'Specimen slightly hemolyzed.'
-      }
-    ]
+      code: '%'
+    }
   }
 ];

@@ -11,7 +11,6 @@ import Vitalinfo from 'src/components/dashboard/Vitalinfo';
 import VitalForm from 'src/components/vitals/VitalForm';
 import VitalsTable from 'src/components/dashboard/VitalsTable';
 import { FhirClientContext } from 'src/FhirClientContext';
-import fhirdata from 'src/__mocks__/fhirdata';
 
 // const DashboardView = (props) => (
 //   <>
@@ -116,7 +115,6 @@ export default class Dashboard extends React.Component {
     constructor(props) {
       super(props);
       console.log(props.name);
-      console.log('test');
       this.state = {
         loading: true,
         vitals: null,
@@ -131,6 +129,7 @@ export default class Dashboard extends React.Component {
     componentDidMount() {
       const query = new URLSearchParams();
       const client = this.context.client;
+      console.log(client);
       query.set('patient', client.patient.id);
       query.set('_count', 100);
       query.set('_sort', '-date'); // Try this to fetch fewer pages
@@ -162,8 +161,6 @@ export default class Dashboard extends React.Component {
         .catch(error => {
           this.setState({ error, loading: false });
         });
-
-      client.create(fhirdata[0]);
     }
 
     changeVital(vitaltype, data) {
