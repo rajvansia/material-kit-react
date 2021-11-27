@@ -21,9 +21,14 @@ export default class VitalForm extends React.Component {
         error: null,
         client: null,
         open: false,
-        systolic: '99',
+        systolic: '',
+        diastolic: '',
+        rr: '',
         mood: '',
-        spo: ''
+        spo: '',
+        temp: '',
+        hr: ''
+
       };
     }
 
@@ -52,15 +57,37 @@ export default class VitalForm extends React.Component {
       // }
 
       const handleClose = () => {
+        const vitaltypes = ['systolic', 'diastolic', 'spo', 'rr', 'hr', 'temp'];
         this.setState({ open: false });
-        fhirdata[0].valueQuantity.value = this.state.spo;
+        const date = new Date();
+        const isodate = date.toISOString();
+        const pid = this.context.client.patient.id;
 
-        this.context.client.create(fhirdata[0]);
-        console.log(this.state.spo);
+        Object.values(vitaltypes).forEach((type) => {
+          if (this.state[type]) {
+            console.log(type);
+            console.log(this.state[type]);
+            const data = fhirdata[type];
+            data.valueQuantity.value = this.state[type];
+            data.effectiveDateTime = isodate;
+            data.issued = isodate;
+            data.subject.reference = 'Patient/' + pid;
+            this.context.client.create(data);
+          }
+        });
+
+        this.setState({
+          systolic: '',
+          diastolic: '',
+          mood: '',
+          spo: '',
+          rr: '',
+          hr: '',
+          temp: ''
+        });
       };
 
       const inputChangeHandler = (event) => {
-        console.log(event);
         this.setState({
           [event.target.name]: event.target.value
         });

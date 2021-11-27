@@ -5,7 +5,8 @@ import {
   Container,
   Grid
 } from '@material-ui/core';
-import VitalsGraph from 'src/components/dashboard//VitalsGraph';
+import VitalsGraph from 'src/components/dashboard/VitalsGraph';
+import NoVitalsGraph from 'src/components/dashboard/NoVitalsGraph';
 import Covid from 'src/components/dashboard/Covid';
 import Vitalinfo from 'src/components/dashboard/Vitalinfo';
 import VitalForm from 'src/components/vitals/VitalForm';
@@ -119,8 +120,15 @@ export default class Dashboard extends React.Component {
         loading: true,
         vitals: null,
         error: null,
-        name: null,
+        name: 'SPO2',
+        currentHeartrate: null,
         data: null,
+        empty: {
+          valueQuantity: {
+            value: 'no entires',
+            unit: ''
+          }
+        }
       };
       this.changeVital = this.changeVital.bind(this);
     }
@@ -140,6 +148,7 @@ export default class Dashboard extends React.Component {
         'http://loinc.org|8331-1', // oraltemprature
         'http://loinc.org|59408-5', // SPo2
         'http://loinc.org|8867-4', // heart rate
+        'http://loinc.org|9279-1', // heart rate
       ].join(','));
       this._loader = client.request('Observation?' + query, {
         pageLimit: 0, // get all pages
@@ -151,11 +160,11 @@ export default class Dashboard extends React.Component {
           const currentHeartrate = byCodes('8867-4');
           const currentTemprature = byCodes('8331-1');
           const currentBloodpressure = byCodes('55284-4');
-          const name = 'SPO2';
-          const data = currentSpo;
+          const currentRR = byCodes('9279-1');
+          const data = currentHeartrate;
 
           this.setState({
-            vitals, currentSpo, currentHeartrate, currentTemprature, currentBloodpressure, name, data, loading: false, error: null
+            currentSpo, currentHeartrate, currentRR, currentTemprature, currentBloodpressure, data, loading: false, error: null
           });
         })
         .catch(error => {
@@ -170,7 +179,7 @@ export default class Dashboard extends React.Component {
 
     render() {
       const {
-        error, loading, vitals
+        error, loading
       } = this.state;
       if (loading) {
         return null;
@@ -179,7 +188,6 @@ export default class Dashboard extends React.Component {
         console.log(error.message);
         return error.message;
       }
-      console.log(vitals);
       return (
         <>
           <Helmet>
@@ -213,8 +221,8 @@ export default class Dashboard extends React.Component {
                   xl={3}
                   xs={12}
                 >
-                   <button type="button" value="hello!" onClick={() => this.changeVital('SPO2', this.state.currentSpo)}>
-                  <Vitalinfo name="BP" vital={this.state.currentSpo[0]} />
+                   <button type="button" value="hello!" onClick={() => this.changeVital('RR', this.state.currentRR)}>
+                   {this.state.currentRR[0] ? <Vitalinfo name="Respiratory Rate" vital={this.state.currentRR[0]} /> : <Vitalinfo name="Respiratory Rate" vital={this.state.empty} /> }
                    </button>
                 </Grid>
                 <Grid
@@ -225,7 +233,7 @@ export default class Dashboard extends React.Component {
                   xs={12}
                 >
                   <button type="button" value="hello!" onClick={() => this.changeVital('Heart Rate', this.state.currentHeartrate)}>
-                  <Vitalinfo name="HR" vital={this.state.currentHeartrate[0]} />
+                  {this.state.currentHeartrate[0] ? <Vitalinfo name="HR" vital={this.state.currentHeartrate[0]} /> : <Vitalinfo name="HR" vital={this.state.empty} /> }
                   </button>
                 </Grid>
                 <Grid
@@ -235,8 +243,8 @@ export default class Dashboard extends React.Component {
                   xl={3}
                   xs={12}
                 >
-                  <button type="button" value="hello!" onClick={() => this.changeVital('RR', this.state.currentSpo)}>
-                  <Vitalinfo name="SPO2" vital={this.state.currentSpo[0]} />
+                  <button type="button" value="hello!" onClick={() => this.changeVital('SPO2', this.state.currentSpo)}>
+                  {this.state.currentSpo[0] ? <Vitalinfo name="SPO2" vital={this.state.currentSpo[0]} /> : <Vitalinfo name="SPO2" vital={this.state.empty} /> }
                   </button>
                 </Grid>
                 <Grid
@@ -246,8 +254,8 @@ export default class Dashboard extends React.Component {
                   xl={3}
                   xs={12}
                 >
-                  <button type="button" value="hello!" onClick={() => this.changeVital('Temp')}>
-                  <Vitalinfo name="Temprature" vital={this.state.currentSpo[0]} />
+                  <button type="button" value="hello!" onClick={() => this.changeVital('Temp', this.state.currentTemprature)}>
+                  {this.state.currentTemprature[0] ? <Vitalinfo name="Temprature" vital={this.state.currentTemprature[0]} /> : <Vitalinfo name="Temprature" vital={this.state.empty} /> }
                   </button>
                 </Grid>
                 <Grid
@@ -266,7 +274,7 @@ export default class Dashboard extends React.Component {
                   xl={12}
                   xs={16}
                 >
-                  <VitalsGraph name={this.state.name} data={this.state.data} />
+                  {this.state.data[0] ? <VitalsGraph name={this.state.name} data={this.state.data} /> : <NoVitalsGraph />}
                 </Grid>
                 <Grid
                   item
@@ -275,7 +283,7 @@ export default class Dashboard extends React.Component {
                   xl={12}
                   xs={16}
                 >
-                  <VitalsTable name={this.state.name} data={this.state.data} />
+                  {this.state.data[0] ? <VitalsTable name={this.state.name} data={this.state.data} /> : <div> </div>}
                 </Grid>
               </Grid>
             </Container>
