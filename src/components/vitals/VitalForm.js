@@ -37,25 +37,7 @@ export default class VitalForm extends React.Component {
       console.log(this.context.client);
     }
 
-    // this loader is used for
-
-    updateFHIR(key, vivalue) {
-      this.setState({ patient: 'test' });
-      console.log(key);
-      console.log(vivalue);
-    }
-
     render() {
-      // function addVitals(vivalue, id) {
-      //   console.log(vivalue);
-      //   console.log(id);
-      //   Object.keys(vivalue).forEach(key => {
-      //     if (vivalue[key] !== '') {
-      //       this.updateFHIR(key, vivalue);
-      //     }
-      //   });
-      // }
-
       const handleClose = () => {
         const vitaltypes = ['systolic', 'diastolic', 'spo', 'rr', 'hr', 'temp'];
         this.setState({ open: false });
@@ -85,6 +67,7 @@ export default class VitalForm extends React.Component {
           hr: '',
           temp: ''
         });
+        this.props.getVitals();
       };
 
       const inputChangeHandler = (event) => {

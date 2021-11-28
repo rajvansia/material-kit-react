@@ -1,7 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, CircularProgress } from '@material-ui/core';
 import LabList from 'src/components/dashboard//LabList';
+import NoData from 'src/components/dashboard/NoData';
 import { FhirClientContext } from '../FhirClientContext';
 
 const LabView = (labs) => (
@@ -58,13 +59,13 @@ export default class Lab extends React.Component {
       console.log(labs);
 
       if (loading) {
-        return null;
+        return <CircularProgress />;
       }
       if (error) {
         console.log(error.message);
         return error.message;
       }
 
-      return <LabView {...labs} />;
+      return labs[0] ? <LabView {...labs} /> : <NoData />;
     }
 }

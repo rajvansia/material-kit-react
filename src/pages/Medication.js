@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import React from 'react';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container, CircularProgress } from '@material-ui/core';
 import MedicationList from 'src/components/medication/MedicationList';
 import MedicationToolbar from 'src/components/medication/MedicationToolbar';
 import { FhirClientContext } from '../FhirClientContext';
@@ -61,7 +61,7 @@ export default class Medication extends React.Component {
       // console.log(customers);
 
       if (loading) {
-        return null;
+        return <CircularProgress />;
       }
       if (error) {
         console.log(error.message);

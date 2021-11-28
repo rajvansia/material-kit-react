@@ -3,9 +3,11 @@ import { Helmet } from 'react-helmet';
 import {
   Box,
   Container,
-  Grid
+  Grid,
+  CircularProgress
 } from '@material-ui/core';
 import TeamCard from 'src/components/careteam//TeamCard';
+import NoData from 'src/components/dashboard/NoData';
 import { FhirClientContext } from '../FhirClientContext';
 
 const Care = (teams) => (
@@ -77,7 +79,7 @@ export default class CareTeam extends React.Component {
       const { error, loading, care } = this.state;
 
       if (loading) {
-        return null;
+        return <CircularProgress />;
       }
       if (error) {
         console.log(error.message);
@@ -85,6 +87,6 @@ export default class CareTeam extends React.Component {
       }
       const teams = Object.values(care);
       console.log(teams);
-      return <Care teams={teams} />;
+      return teams[0] ? <Care {...teams} /> : <NoData />;
     }
 }
