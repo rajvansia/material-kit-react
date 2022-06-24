@@ -51,7 +51,7 @@ export default class VitalForm extends React.Component {
             console.log(this.state[type]);
             const data = fhirdata[type];
             data.valueQuantity.value = this.state[type];
-            data.effectiveDateTime = isodate;
+            data.effectiveDateTime = date;
             data.issued = isodate;
             data.subject.reference = 'Patient/' + pid;
             this.context.client.create(data);
